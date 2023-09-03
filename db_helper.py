@@ -1,5 +1,7 @@
 import mysql.connector
 
+
+
 global cnx
 
 cnx = mysql.connector.connect(
