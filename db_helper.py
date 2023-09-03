@@ -11,7 +11,7 @@ cnx = mysql.connector.connect(
 
 def get_books():
     cur = cnx.cursor()
-    cur.execute("SELECT * FROM books")
+    cur.execute("SELECT * FROM book")
     rows = cur.fetchall()
     return rows
 
