@@ -1,6 +1,4 @@
 import mysql.connector
-import re
-
 
 global cnx
 
@@ -32,4 +30,12 @@ def add_order(order):
     cur.execute(sql, values)
     cnx.commit()
     return cur.lastrowid
+
+def remove_order(order_id):
+    cur = cnx.cursor()
+    sql = "DELETE FROM orders WHERE orderID = %s"
+    cur.execute(sql, (order_id,))
+    cnx.commit()
+
+
 
