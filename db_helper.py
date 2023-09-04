@@ -11,18 +11,16 @@ cnx = mysql.connector.connect(
     database = 'bookstore'
 )
 
-
+cur = cnx.cursor()
 now = datetime.datetime.now()
 datestring  = now.strftime("%Y-%m-%d")
 
 def get_books():
-    cur = cnx.cursor()
     cur.execute("SELECT * FROM book")
     rows = cur.fetchall()
     return rows
 
 def search_book(keyword):
-    cur = cnx.cursor()
     sql = "SELECT * FROM books WHERE title LIKE %s"
     keyword_with_wildcards = f"%{keyword}%"
     cur.execute(sql, (keyword_with_wildcards,))
@@ -36,7 +34,6 @@ def add_order(order:Orders):
                         "VALUES (%s, %s, %s, %s, %s)")
         orderdate_str = order.orderdate.strftime('%Y-%m-%d %H:%M:%S')
         order_data = (order.orderID, order.bookID, orderdate_str, order.orderamount, order.userID)
-        cur = cnx.cursor()
         cur.execute(insert_query, order_data)
         cnx.commit()
 
@@ -46,13 +43,29 @@ def add_order(order:Orders):
 
 
 def remove_order(order_id):
-    cur = cnx.cursor()
-    sql = "DELETE FROM orders WHERE orderID = %s"
+    sql_select = "SELECT * FROM orders WHERE orderID = %s"
+    sql_delete = "DELETE FROM orders WHERE orderID = %s"
     try:
-        cur.execute(sql, (order_id,))
+        cur.execute(sql_select, (order_id,))
+        order = cur.fetchone()
+        print(order)
+        if order is None:
+            return {"message": "Order not found"}
+        cur.execute(sql_delete, (order_id,))
         cnx.commit()
-        print("Query executed successfully")
+        return {"message": "Order removed successfully"}
     except Exception as e:
         print(f"Error executing query: {e}")
 
 
+def get_orders():
+    try:
+        sql = "SELECT * FROM orders"
+        cur.execute(sql)
+        rows = cur.fetchall()
+        return rows
+    except Exception as e:
+        return {"message": f"Error: {str(e)}"}
+
+
+remove_order(100)

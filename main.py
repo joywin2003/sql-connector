@@ -37,9 +37,12 @@ async def add_order(order:Orders):
     order = db_helper.add_order(order)
     return {"order":order}
 
-
+@app.get('/get_orders/')
+async def get_order():
+    orders = db_helper.get_orders()
+    return {"orders":orders}
 
 @app.delete('/remove_order/{order_id}')
 async def delete_order(order_id):
-    db_helper.remove_order(order_id)
-    return {"order_id":order_id}
+    order_status = db_helper.remove_order(order_id)
+    return {"order_id":order_status}
