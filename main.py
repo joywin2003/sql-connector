@@ -1,5 +1,4 @@
 from fastapi import FastAPI,HTTPException
-from pydantic import BaseModel
 from typing import List
 import db_helper
 from datetime import datetime
@@ -27,11 +26,25 @@ async def root():
 
 
 
+'''Function for Books'''
 @app.get('/get_books/')
 async def get_books():
-    books =  db_helper.get_books()
-    return {"books":books}
+    try:
+        books =  db_helper.get_books()
+        return {"books":books}
+    except:
+        raise HTTPException(status_code=404, detail="Books not found")
+    
+@app.get('/search_book/{keyword}')
+async def search_book(keyword):
+    try:
+        books = db_helper.search_book(keyword)
+        return {"books":books}
+    except:
+        raise HTTPException(status_code=404, detail="Books not found")
 
+
+"functions for orders"
 @app.post('/add_order/')
 async def add_order(order:Orders):
     order = db_helper.add_order(order)

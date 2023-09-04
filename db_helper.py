@@ -21,11 +21,16 @@ def get_books():
     return rows
 
 def search_book(keyword):
-    sql = "SELECT * FROM books WHERE title LIKE %s"
+    sql = "SELECT * FROM book WHERE title LIKE %s"
     keyword_with_wildcards = f"%{keyword}%"
     cur.execute(sql, (keyword_with_wildcards,))
     rows = cur.fetchall()
+    
+    if not rows:
+        return {"message": "Books not found"}
+    
     return rows
+
 
 def add_order(order:Orders):
     try:
@@ -68,4 +73,4 @@ def get_orders():
         return {"message": f"Error: {str(e)}"}
 
 
-remove_order(100)
+    
