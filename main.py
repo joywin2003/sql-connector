@@ -4,7 +4,6 @@ from typing import List
 import db_helper
 from datetime import datetime
 from fastapi.middleware.cors import CORSMiddleware
-from datetime import datetime
 import json
 from Modal import Orders, User, Books, Admins
 
@@ -19,7 +18,7 @@ app.add_middleware(
 )
 
 orders: List[User] = [
-    User(1, "user1", "password1", "email1"),
+    
 ]
 
 @app.get('./')
@@ -36,10 +35,11 @@ async def get_books():
 @app.post('/add_order/')
 async def add_order(order:Orders):
     order = db_helper.add_order(order)
-    return 
+    return {"order":order}
+
+
 
 @app.delete('/remove_order/{order_id}')
 async def delete_order(order_id):
     db_helper.remove_order(order_id)
-    return
-    raise HTTPException(status_code=404, detail="Order not found")
+    return {"order_id":order_id}

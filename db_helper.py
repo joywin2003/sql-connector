@@ -1,6 +1,6 @@
 import mysql.connector
-
-
+import datetime
+from Modal import Orders
 
 global cnx
 
@@ -8,8 +8,12 @@ cnx = mysql.connector.connect(
     host = 'localhost',
     user = 'root',
     password = 'mysql123',
-    database = 'dbms'
+    database = 'bookstore'
 )
+
+
+now = datetime.datetime.now()
+datestring  = now.strftime("%Y-%m-%d")
 
 def get_books():
     cur = cnx.cursor()
@@ -25,19 +29,30 @@ def search_book(keyword):
     rows = cur.fetchall()
     return rows
 
-def add_order(order):
-    cur = cnx.cursor()
-    sql = "INSERT INTO orders (bookID, orderdate, orderamount, userID) VALUES (%s, %s, %s, %s)"
-    values = (order['bookID'], order['orderdate'], order['orderamount'], order['userID'])
-    cur.execute(sql, values)
-    cnx.commit()
-    return cur.lastrowid
+def add_order(order:Orders):
+    try:
+        insert_query = ("INSERT INTO orders "
+                        "(orderID, bookID, orderdate, orderamount, userID) "
+                        "VALUES (%s, %s, %s, %s, %s)")
+        orderdate_str = order.orderdate.strftime('%Y-%m-%d %H:%M:%S')
+        order_data = (order.orderID, order.bookID, orderdate_str, order.orderamount, order.userID)
+        cur = cnx.cursor()
+        cur.execute(insert_query, order_data)
+        cnx.commit()
+
+        return {"message": "Order added successfully", "order": order}
+    except Exception as e:
+        return {"message": f"Error: {str(e)}"}
+
 
 def remove_order(order_id):
     cur = cnx.cursor()
     sql = "DELETE FROM orders WHERE orderID = %s"
-    cur.execute(sql, (order_id,))
-    cnx.commit()
-
+    try:
+        cur.execute(sql, (order_id,))
+        cnx.commit()
+        print("Query executed successfully")
+    except Exception as e:
+        print(f"Error executing query: {e}")
 
 

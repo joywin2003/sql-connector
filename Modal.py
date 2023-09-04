@@ -1,4 +1,4 @@
-import datetime
+from datetime import datetime
 from typing import Optional,List
 from pydantic import BaseModel
 
@@ -27,6 +27,6 @@ class Books(BaseModel):
 class Orders(BaseModel):
     orderID:int
     bookID:int
-    orderdate: str
+    orderdate: datetime
     orderamount:int
     userID:int
