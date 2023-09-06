@@ -70,23 +70,29 @@ def remove_order(order_id):
 
 def get_orders():
     try:
-        sql = "SELECT * FROM orders"
+        sql = "SELECT * FROM cart"
         cur.execute(sql)
         rows = cur.fetchall()
         return rows
     except Exception as e:
         return {"message": f"Error: {str(e)}"}
 
-def add_cart(cart:CartItem):
+async def add_cart(cart_item: CartItem):
     try:
-        insert_query = ("INSERT INTO cart "
-                        "(id, title, price, amount) "
-                        "VALUES (%s, %s, %s, %s)")
-        cart_data = (cart.id, cart.title, cart.price, cart.amount)
+        insert_query = (
+            "INSERT INTO cart "
+            "(id, title, price, amount) "
+            "VALUES (%s, %s, %s, %s)"
+        )
+        cart_data = (
+            cart_item.id,
+            cart_item.title,
+            cart_item.price,
+            cart_item.amount,
+        )
         cur.execute(insert_query, cart_data)
         cnx.commit()
-
-        return {"message": "Order added successfully", "order": cart}
+        return {"message": "Cart item added successfully"}
     except Exception as e:
         return {"message": f"Error: {str(e)}"}
 
