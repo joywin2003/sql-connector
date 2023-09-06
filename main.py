@@ -4,7 +4,7 @@ import db_helper
 from datetime import datetime
 from fastapi.middleware.cors import CORSMiddleware
 import json
-from Modal import Orders, User, Books, Admins
+from Modal import Orders, User, Books, Admins,CartItem
 
 app  = FastAPI()
 
@@ -68,3 +68,7 @@ async def get_order():
     cartitems = db_helper.get_orders()
     return {"cartitems":cartitems}
 
+@app.post('/add_cart/')
+async def add_cart(cart:CartItem):
+    cart = db_helper.add_cart(cart)
+    return {"cart":cart}
