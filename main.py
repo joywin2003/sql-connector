@@ -72,3 +72,8 @@ async def get_order():
 async def add_cart(cart:CartItem):
     cart = db_helper.add_cart(cart)
     return {"cart":cart}
+
+@app.delete('/delete_cart/{cart_item_id}')
+async def delete_cart(cart_item_id):
+    cart = db_helper.delete_cart(cart_item_id)
+    return {"cart":cart}

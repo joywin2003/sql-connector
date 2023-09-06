@@ -77,7 +77,7 @@ def get_orders():
     except Exception as e:
         return {"message": f"Error: {str(e)}"}
 
-async def add_cart(cart_item: CartItem):
+def add_cart(cart_item: CartItem):
     try:
         insert_query = (
             "INSERT INTO cart "
@@ -93,6 +93,17 @@ async def add_cart(cart_item: CartItem):
         cur.execute(insert_query, cart_data)
         cnx.commit()
         return {"message": "Cart item added successfully"}
+    except Exception as e:
+        # Log the error for debugging purposes
+        print(f"Error adding cart item: {str(e)}")
+        return {"message": f"Error: {str(e)}"}
+    
+def delete_cart(cart_item_id: int):
+    try:
+        delete_query = "DELETE FROM cart WHERE id = %s"
+        cur.execute(delete_query, (cart_item_id,))
+        cnx.commit()
+        return {"message": "Cart item deleted successfully"}
     except Exception as e:
         return {"message": f"Error: {str(e)}"}
 
