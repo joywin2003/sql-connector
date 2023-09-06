@@ -59,3 +59,12 @@ async def get_order():
 async def delete_order(order_id):
     order_status = db_helper.remove_order(order_id)
     return {"order_id":order_status}
+
+
+"for cart"
+
+@app.get('/get_cartitems/')
+async def get_order():
+    cartitems = db_helper.get_orders()
+    return {"cartitems":cartitems}
+

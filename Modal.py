@@ -1,6 +1,7 @@
 from datetime import datetime
 from typing import Optional,List
 from pydantic import BaseModel
+from uuid import UUID, uuid4
 
 
 now = datetime.now()
@@ -25,8 +26,14 @@ class Books(BaseModel):
     price:float
     
 class Orders(BaseModel):
-    orderID:int
+    id: int
     bookID:int
     orderdate: datetime
     orderamount:int
     userID:int
+    
+class CartItem(BaseModel):
+    id: int
+    title: str
+    price: float
+    amount: int

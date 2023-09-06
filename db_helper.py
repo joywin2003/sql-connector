@@ -1,6 +1,6 @@
 import mysql.connector
 import datetime
-from Modal import Orders
+from Modal import Orders, CartItem
 
 global cnx
 
@@ -17,6 +17,11 @@ datestring  = now.strftime("%Y-%m-%d")
 
 def get_books():
     cur.execute("SELECT * FROM book")
+    rows = cur.fetchall()
+    return rows
+
+def get_cart():
+    cur.execute("SELECT * FROM cart")
     rows = cur.fetchall()
     return rows
 
@@ -72,5 +77,17 @@ def get_orders():
     except Exception as e:
         return {"message": f"Error: {str(e)}"}
 
+def add_cart(cart:CartItem):
+    try:
+        insert_query = ("INSERT INTO cart "
+                        "(id, title, price, amount) "
+                        "VALUES (%s, %s, %s, %s)")
+        cart_data = (cart.id, cart.title, cart.price, cart.amount)
+        cur.execute(insert_query, cart_data)
+        cnx.commit()
+
+        return {"message": "Order added successfully", "order": cart}
+    except Exception as e:
+        return {"message": f"Error: {str(e)}"}
 
     
