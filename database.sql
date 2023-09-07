@@ -30,6 +30,13 @@ CREATE TABLE IF NOT EXISTS orders (
     orderamount DECIMAL(10, 2)
 );
 
+CREATE TABLE IF NOT EXISTS cart (
+    id INT AUTO_INCREMENT PRIMARY KEY,
+    title VARCHAR(30) NOT NULL,
+    price DECIMAL(10, 2),
+    amount INT
+);
+
 
 
 
