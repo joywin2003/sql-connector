@@ -25,14 +25,10 @@ CREATE TABLE IF NOT EXISTS book (
 
 CREATE TABLE IF NOT EXISTS orders (
     orderID INT AUTO_INCREMENT PRIMARY KEY,
-    bookID INT,
+    bookIDs VARCHAR(255),
     orderdate DATE,
-    orderamount DECIMAL(10, 2),
-    userID INT,
-    FOREIGN KEY (bookID) REFERENCES book(bookID),
-    FOREIGN KEY (userID) REFERENCES users(userID)
+    orderamount DECIMAL(10, 2)
 );
-
 
 
 

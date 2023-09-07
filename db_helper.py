@@ -40,8 +40,8 @@ def search_book(keyword):
 def add_order(order:Orders):
     try:
         insert_query = ("INSERT INTO orders "
-                        "(orderID, bookID, orderdate, orderamount, userID) "
-                        "VALUES (%s, %s, %s, %s, %s)")
+                        "(orderID, bookID, orderdate, orderamount) "
+                        "VALUES (%s, %s, %s, %s)")
         orderdate_str = order.orderdate.strftime('%Y-%m-%d %H:%M:%S')
         order_data = (order.orderID, order.bookID, orderdate_str, order.orderamount, order.userID)
         cur.execute(insert_query, order_data)

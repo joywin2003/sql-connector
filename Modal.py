@@ -27,10 +27,9 @@ class Books(BaseModel):
     
 class Orders(BaseModel):
     id: int
-    bookID:int
+    bookID: str
     orderdate: datetime
     orderamount:int
-    userID:int
     
 class CartItem(BaseModel):
     id: int
